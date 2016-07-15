@@ -20,25 +20,3 @@ Template.hello.events({
     instance.counter.set(instance.counter.get() + 1);
   },
 });
-
-Template.site.events({
-  'click .js-request-demo': function () {
-    BootstrapModalPrompt.prompt({
-      dialogTemplate: Template.RequestDemoModal
-    });
-  }
-});
-Template.RequestDemoModal.helpers({
-requestDemoSchema: function () {
-return Schema.RequestDemo;
-}
-});
-
-
-AutoForm.hooks({
-requestDemo: {
-onSuccess: function(operation, result, template) {
-BootstrapModalPrompt.hide();
-}
-}
-});
