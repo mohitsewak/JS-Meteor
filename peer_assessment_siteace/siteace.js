@@ -28,25 +28,28 @@ if (Meteor.isClient) {
                 // getting existing vote
                 var websiteObj=Websites.findOne({_id:website_id});
                 var existingUpVote=websiteObj.upVote;
+                var existingDownVote=websiteObj.downVote;
                 var newUpVote=existingUpVote+1
                 console.log(websiteObj);
                 console.log("ExistingUpVote:"+existingUpVote);
+                console.log("ExistingDownVote:"+existingDownVote);
                 console.log("NewUpVote:"+newUpVote);
             Websites.update({_id:website_id}, 
                     {$set: {upVote:newUpVote}});
 			return false;// prevent the button from reloading the page
 		}, 
 		"click .js-downvote":function(event){
-
 			// example of how you can access the id for the website in the database
 			// (this is the data context for the template)
 			var website_id = this._id;
 			console.log("Down voting website with id "+website_id);
 			// put the code in here to remove a vote from a website!
             var websiteObj=Websites.findOne({_id:website_id});
+            var existingUpVote=websiteObj.upVote;
             var existingDownVote=websiteObj.downVote;
             var newDownVote=existingDownVote+1
                 console.log(websiteObj);
+                console.log("ExistingUpVote:"+existingUpVote);
                 console.log("ExistingDownVote:"+existingDownVote);
                 console.log("NewDownVote:"+newDownVote);
             Websites.update({_id:website_id}, 
