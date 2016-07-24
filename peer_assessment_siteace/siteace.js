@@ -115,11 +115,24 @@ if (Meteor.isClient) {
 		}
 	});
     
+//Adding new comments to comment list on comment form submit event
     Template.website.events({
        'submit .js-comment-form':function(event){
-           console.log(event.currentTarget);
            console.log(event.target);
            console.log(this._id);
+           var commentText=document.getElementById("commentText").value;
+//           console.log(commentText);
+           newCommentItem={commentBy:Meteor.user().emails[0].address, commentText:commentText};
+//           console.log(newCommentItem);
+           var websiteId=this._id;
+           existingCommentList=Websites.findOne({_id:websiteId}).commentList;
+//           console.log(existingCommentList);
+           var newCommentList=existingCommentList;
+           newCommentList.unshift(newCommentItem);
+           console.log(newCommentList);
+            Websites.update({_id:websiteId}, 
+                    {$set: {commentList:newCommentList}});
+           document.getElementById("commentText").value="";
            return false;
        } 
     });
