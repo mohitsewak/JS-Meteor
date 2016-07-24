@@ -9,7 +9,7 @@ if (Meteor.isClient) {
 	// helper function that returns all available websites
 	Template.website_list.helpers({
 		websites:function(){
-			return Websites.find({});
+			return Websites.find({},{sort:{upVote:-1}});
 		}
 	});
 
@@ -25,7 +25,15 @@ if (Meteor.isClient) {
 			var website_id = this._id;
 			console.log("Up voting website with id "+website_id);
 			// put the code in here to add a vote to a website!
-
+                // getting existing vote
+                var websiteObj=Websites.findOne({_id:website_id});
+                var existingUpVote=websiteObj.upVote;
+                var newUpVote=existingUpVote+1
+                console.log(websiteObj);
+                console.log("ExistingUpVote:"+existingUpVote);
+                console.log("NewUpVote:"+newUpVote);
+            Websites.update({_id:website_id}, 
+                    {$set: {upVote:newUpVote}});
 			return false;// prevent the button from reloading the page
 		}, 
 		"click .js-downvote":function(event){
@@ -34,9 +42,15 @@ if (Meteor.isClient) {
 			// (this is the data context for the template)
 			var website_id = this._id;
 			console.log("Down voting website with id "+website_id);
-
 			// put the code in here to remove a vote from a website!
-
+            var websiteObj=Websites.findOne({_id:website_id});
+            var existingDownVote=websiteObj.downVote;
+            var newDownVote=existingDownVote+1
+                console.log(websiteObj);
+                console.log("ExistingDownVote:"+existingDownVote);
+                console.log("NewDownVote:"+newDownVote);
+            Websites.update({_id:website_id}, 
+                    {$set: {downVote:newDownVote}});
 			return false;// prevent the button from reloading the page
 		}
 	})
@@ -70,25 +84,41 @@ if (Meteor.isServer) {
     		title:"Goldsmiths Computing Department", 
     		url:"http://www.gold.ac.uk/computing/", 
     		description:"This is where this course was developed.", 
-    		createdOn:new Date()
+    		createdOn:new Date(),
+            createdBy:"System",
+            upVote:0,
+            downVote:0,
+            commentList:[{commentBy:'SYstem',commentText:'Site preloaded by system'}]
     	});
     	 Websites.insert({
     		title:"University of London", 
     		url:"http://www.londoninternational.ac.uk/courses/undergraduate/goldsmiths/bsc-creative-computing-bsc-diploma-work-entry-route", 
     		description:"University of London International Programme.", 
-    		createdOn:new Date()
+    		createdOn:new Date(),
+            createdBy:"System",
+            upVote:0,
+            downVote:0,
+            commentList:[{commentBy:'SYstem',commentText:'Site preloaded by system'}]
     	});
     	 Websites.insert({
     		title:"Coursera", 
     		url:"http://www.coursera.org", 
     		description:"Universal access to the world’s best education.", 
-    		createdOn:new Date()
+    		createdOn:new Date(),
+            createdBy:"System",
+            upVote:0,
+            downVote:0,
+            commentList:[{commentBy:'SYstem',commentText:'Site preloaded by system'}]
     	});
     	Websites.insert({
     		title:"Google", 
     		url:"http://www.google.com", 
     		description:"Popular search engine.", 
-    		createdOn:new Date()
+    		createdOn:new Date(),
+            createdBy:"System",
+            upVote:0,
+            downVote:0,
+            commentList:[{commentBy:'System',commentText:'Site preloaded by system'}]
     	});
     }
   });

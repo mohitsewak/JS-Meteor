@@ -17,7 +17,9 @@
 	</nav>
 
 	<div class="container">
-		{{> website_form}}
+		{{#if currentUser}}
+            {{> website_form}}
+        {{/if}}
 		{{> website_list}}
 	</div>
 </body>
@@ -62,7 +64,9 @@
 	<a href="{{url}}">{{title}}</a>
 	<p>
 		{{description}}
+        <br/>   
 	</p>
+    
 	<a href="#" class="btn btn-default js-upvote">
 		<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
 	</a>
@@ -70,5 +74,7 @@
 		<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
 	</a>
 	<!-- you will be putting your up and down vote buttons in here! -->
+    <h5>Total UpVotes: {{upVote}}, Total DownVotes:{{downVote}}</h5>
+    <p>Listed On: {{createdOn}}<p>
 </li>
 </template>
