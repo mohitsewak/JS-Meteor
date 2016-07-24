@@ -35,12 +35,11 @@
 	    </div>
 	  </div>
 	</nav>
-
 	<div class="container">
 		{{#if currentUser}}
             {{> website_form}}
         {{/if}}
-		{{> website_list}}
+<!--		{{> website_list}}-->
 	</div>
 </template>
 
@@ -80,25 +79,48 @@
 <!-- template that displays individual sites' page -->
 <template name="website">
   <div class="container">
-  <h2>{{title}}</h2>
-  <a href="/websites">Go Back...</a>
+      <h5><a href="/websites">Go Back to Websites List...</a></h5>
+      <h2>{{title}}</h2>
       <p>
-          Description: {{description}}
-            <br/>
-          URL: {{url}}
-          
-          ListedOn: {{createdOn}}
-          ListedBy: {{createdBy}}
-          UpVotes: {{upVotes}}
-          DownVotes: {{downVotes}}
+          Title: <a href={{url}}>{{title}}</a> <br/>
+          Description: {{description}} <br/>
+          URL: <a href={{url}}>{{url}}</a> <br/>
+          ListedOn: {{createdOn}} <br/>
+          ListedBy: {{createdBy}} <br/>
+          UpVotes: {{upVotes}} <br/>
+          DownVotes: {{downVotes}} <br/>
       </p>
-      
+<!--    If the user is logged in they could comment-->
+    {{#if currentUser}}
       <div class="container">
-      <h4>Comments...</h4>
-          
+          <form role="form" class="form-horizontal js-comment-form">
+              <div class="form-group">
+                <label for="comment">Add Comment:</label>
+                <textarea class="form-control" rows="5" id="comment"></textarea>
+                <button type="submit" class="btn btn-default btn-success">Add Comment</button>
+               </div>
+          </form>
       </div>
+<!--    Prompt user to log in to comment if not already logged in-->
+    {{else}}
+      <h4> Log in to add new comment!</h4>
+    {{/if}}
       
-</div>
+
+    
+<!--      List of comments  -->
+    </div>
+      <div class="container">
+          <h4>Comments.</h4>
+          {{#each commentList}}
+              <p> 
+                  By: {{commentBy}} <br/>
+                  {{commentText}}
+              </p>
+              <br/>
+          {{/each}}
+      </div>    
+
 </template>
 
 <!-- template that displays individual website entries -->
@@ -115,7 +137,7 @@
         <a href="#" class="btn btn-default js-downvote">
             <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
         </a>
-        <a href="#" class="btn btn-default btn-success">Details...</a>
+        <a href="website/{{_id}}" class="btn btn-default btn-success">Details...</a>
         <!-- you will be putting your up and down vote buttons in here! -->
         <h5>Total UpVotes: {{upVote}}, Total DownVotes:{{downVote}}</h5>
         <h6>Listed On: {{createdOn}}</h6>    
