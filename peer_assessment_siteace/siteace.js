@@ -109,10 +109,25 @@ if (Meteor.isClient) {
 			// here is an example of how to get the url out of the form:
 			var url = event.target.url.value;
 			console.log("The url they entered is: "+url);
-			//  put your website saving code in here!	
-			return false;// stop the form submit from reloading the page
-
-		}
+			//  put your website saving code in here!
+            if (Meteor.user()){
+                    Websites.insert({
+                        title:event.target.title.value, 
+                        url:event.target.url.value, 
+                        description:event.target.description.value, 
+                        createdOn:new Date(),
+                        createdBy:Meteor.user().emails[0].address,
+                        upVote:0,
+                        downVote:0,
+                        commentList:[]
+                    });
+                }
+            else {
+                    alert("You need to be signed in to save a website.");                
+                }
+            $("#website_form").toggle('slow');
+			return false;// stop the form submit from reloading the page    
+        }	
 	});
     
 //Adding new comments to comment list on comment form submit event
@@ -121,12 +136,9 @@ if (Meteor.isClient) {
            console.log(event.target);
            console.log(this._id);
            var commentText=document.getElementById("commentText").value;
-//           console.log(commentText);
            newCommentItem={commentBy:Meteor.user().emails[0].address, commentText:commentText};
-//           console.log(newCommentItem);
            var websiteId=this._id;
            existingCommentList=Websites.findOne({_id:websiteId}).commentList;
-//           console.log(existingCommentList);
            var newCommentList=existingCommentList;
            newCommentList.unshift(newCommentItem);
            console.log(newCommentList);
