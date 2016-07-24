@@ -1,5 +1,15 @@
 Websites = new Mongo.Collection("websites");
 
+
+	/////
+	// search - component both client and server
+	///// easy search component
+  WebsitesIndex = new EasySearch.Index({
+    collection: Websites,
+    fields: ['title','url','createdBy','description','commentList'],
+    engine: new EasySearch.Minimongo()
+  });
+
 if (Meteor.isClient) {
 
 	/////
@@ -29,9 +39,9 @@ if (Meteor.isClient) {
     });
 
     Router.route('/website/:_id', function () {
-      this.render('navbar', {
-        to:"navbar"
-      });
+//      this.render('navbar', {
+//        to:"navbar"
+//      });
       this.render('website', {
         to:"main", 
         data:function(){
@@ -40,16 +50,17 @@ if (Meteor.isClient) {
       });
     });
 
-
-    
-    
-    
     
 	/////
 	// template helpers 
 	/////
 
-	// helper function that returns all available websites
+    // helpers function for search - seach component for client
+    Template.searchBox.helpers({
+      websitesIndex: () => WebsitesIndex
+    });
+    
+    // helper function that returns all available websites
 	Template.website_list.helpers({
 		websites:function(){
 			return Websites.find({},{sort:{upVote:-1}});
@@ -130,6 +141,13 @@ if (Meteor.isClient) {
         }	
 	});
     
+//    Template to enable toggle for search button
+    Template.searchBox.events({
+        'click .js-toggle-search-box':function(event){
+            $("#search-box").toggle('slow');
+        } 
+    });
+    
 //Adding new comments to comment list on comment form submit event
     Template.website.events({
        'submit .js-comment-form':function(event){
@@ -151,6 +169,7 @@ if (Meteor.isClient) {
 }
 
 
+//Added additional fields in the collection to support voting, comments, and aesthetical printing functionalities
 if (Meteor.isServer) {
 	// start up function that creates entries in the Websites databases.
   Meteor.startup(function () {

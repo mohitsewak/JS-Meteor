@@ -24,7 +24,7 @@
 
 <!-- template that displays navbar -->
 <template name="navbar">
-    	<!-- navbar  - you will be putting the login functions here -->
+    <!-- navbar  - you will be putting the login functions here -->
     <div class="container">{{> loginButtons}}</div>
 	<nav class="navbar navbar-default">
 	  <div class="container-fluid">
@@ -36,11 +36,39 @@
 	  </div>
 	</nav>
 	<div class="container">
-		{{#if currentUser}}
-            {{> website_form}}
-        {{/if}}
-<!--		{{> website_list}}-->
+		<div class="row">
+            <div class="col-sm-6">
+                {{#if currentUser}}
+                    {{> website_form}}
+                {{/if}}
+            </div>
+            <div class="col-sm-6">
+                    {{> searchBox}}
+            </div>
+        </div>
 	</div>
+</template>
+
+<!-- template that displays seachbox -->
+<template name="searchBox">
+    <a class="btn btn-default js-toggle-search-box" href="#">
+  		<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+	</a>
+    <div id="search-box" class="hidden_div">
+        {{> EasySearch.Input index=websitesIndex }}
+        <ul>
+            {{#EasySearch.Each index=websitesIndex }}
+                <li>
+                    <p>
+                        <a href=/website/{{_id}}>{{title}}</a> <br/>
+                        <a href={{url}}>URL:{{url}}</a> <br/>
+                        Description:{{description}} <br/>
+                        createdBy:{{createdBy}} <br/>
+                    </p>
+                </li>
+            {{/EasySearch.Each}}
+        </ul>
+    </div>
 </template>
 
 <!-- template that displays form to add website -->
@@ -78,8 +106,15 @@
 
 <!-- template that displays individual sites' page -->
 <template name="website">
+<!--we do want un-logged in users to be able to log in from this page for adding comments, so adding loginButtons-->
+    <div class="container">
+        {{> loginButtons}}
+        <div class="navbar navbar-default">
+            <h3> Site Ace - Website Detail for {{title}}</h3>
+        </div>
+    </div>
   <div class="container">
-      <h5><a href="/websites">Go Back to Websites List...</a></h5>
+      <h4><a href="/websites">Go Back to Websites List...</a></h4>
       <h2>{{title}}</h2>
       <p>
           Title: <a href={{url}}>{{title}}</a> <br/>
@@ -104,10 +139,7 @@
 <!--    Prompt user to log in to comment if not already logged in-->
     {{else}}
       <h4> Log in to add new comment!</h4>
-    {{/if}}
-      
-
-    
+    {{/if}}    
 <!--      List of comments  -->
     </div>
       <div class="container">
