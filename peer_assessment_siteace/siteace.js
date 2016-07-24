@@ -3,6 +3,49 @@ Websites = new Mongo.Collection("websites");
 if (Meteor.isClient) {
 
 	/////
+	// routing
+	/////
+
+    Router.configure({
+      layoutTemplate: 'ApplicationLayout'
+    });
+
+    Router.route('/', function () {
+      this.render('navbar', {
+        to:"navbar"
+      });
+      this.render('website_list', {
+        to:"main"
+      });
+    });
+
+    Router.route('/websites', function () {
+      this.render('navbar', {
+        to:"navbar"
+      });
+      this.render('website_list', {
+        to:"main"
+      });
+    });
+
+    Router.route('/website/:_id', function () {
+      this.render('navbar', {
+        to:"navbar"
+      });
+      this.render('website', {
+        to:"main", 
+        data:function(){
+          return Websites.findOne({_id:this.params._id});
+        }
+      });
+    });
+
+
+    
+    
+    
+    
+	/////
 	// template helpers 
 	/////
 

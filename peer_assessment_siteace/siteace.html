@@ -3,9 +3,29 @@
 </head>
 
 <body>
-	<!-- navbar  - you will be putting the login functions here -->
+
+</body>
+
+<template name="ApplicationLayout">
+  {{> yield "navbar"}}
+  {{> yield "main"}}
+  
+</template>
+
+<!-- template that displays welcome page -->
+<template name="welcome">
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Welcome to Site Ace by Mohit Sewak!</h1>
+      <a href="/websites" class="btn btn-info">ENTER</a>
+    </div>
+  </div>
+</template> 
+
+<!-- template that displays navbar -->
+<template name="navbar">
+    	<!-- navbar  - you will be putting the login functions here -->
     <div class="container">{{> loginButtons}}</div>
-    
 	<nav class="navbar navbar-default">
 	  <div class="container-fluid">
 	    <div class="navbar-header">
@@ -22,9 +42,9 @@
         {{/if}}
 		{{> website_list}}
 	</div>
-</body>
+</template>
 
-
+<!-- template that displays form to add website -->
 <template name="website_form">
 	<a class="btn btn-default js-toggle-website-form" href="#">
   		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -43,7 +63,6 @@
 		    <label for="description">Description</label>
 		    <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ...">
 		  </div>
-
 		  <button type="submit" class="btn btn-default">Submit</button>
 		</form>
 	</div>
@@ -58,23 +77,48 @@
 	</ol>
 </template>
 
+<!-- template that displays individual sites' page -->
+<template name="website">
+  <div class="container">
+  <h2>{{title}}</h2>
+  <a href="/websites">Go Back...</a>
+      <p>
+          Description: {{description}}
+            <br/>
+          URL: {{url}}
+          
+          ListedOn: {{createdOn}}
+          ListedBy: {{createdBy}}
+          UpVotes: {{upVotes}}
+          DownVotes: {{downVotes}}
+      </p>
+      
+      <div class="container">
+      <h4>Comments...</h4>
+          
+      </div>
+      
+</div>
+</template>
+
 <!-- template that displays individual website entries -->
 <template name="website_item">
-<li>
-	<a href="{{url}}">{{title}}</a>
-	<p>
-		{{description}}
-        <br/>   
-	</p>
-    
-	<a href="#" class="btn btn-default js-upvote">
-		<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-	</a>
-	<a href="#" class="btn btn-default js-downvote">
-		<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-	</a>
-	<!-- you will be putting your up and down vote buttons in here! -->
-    <h5>Total UpVotes: {{upVote}}, Total DownVotes:{{downVote}}</h5>
-    <h6>Listed On: {{createdOn}}</h6>
-</li>
+    <li>
+        <a href="{{url}}">{{title}}</a>
+        <p>
+            {{description}}
+            <br/>   
+        </p>
+        <a href="#" class="btn btn-default js-upvote">
+            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+        </a>
+        <a href="#" class="btn btn-default js-downvote">
+            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+        </a>
+        <a href="#" class="btn btn-default btn-success">Details...</a>
+        <!-- you will be putting your up and down vote buttons in here! -->
+        <h5>Total UpVotes: {{upVote}}, Total DownVotes:{{downVote}}</h5>
+        <h6>Listed On: {{createdOn}}</h6>    
+    </li>
 </template>
+
